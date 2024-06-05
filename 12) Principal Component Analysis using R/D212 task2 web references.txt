@@ -1,0 +1,2 @@
+Zach. (2020c, December 1). Principal components analysis in R: Step-by-Step example. Statology. https://www.statology.org/principal-components-analysis-in-r/
+(Zach, 2020c)

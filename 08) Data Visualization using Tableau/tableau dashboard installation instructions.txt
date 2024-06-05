@@ -1,0 +1,26 @@
+Tableau dashboards are typically shared as Tableau workbooks, which are saved in a file format with a ".twbx" extension. To install a Tableau dashboard, you'll need to follow these basic steps:
+
+Download and Install Tableau Reader (for Viewer) or Tableau Desktop (for Creator):
+
+If you're only planning to view and interact with the dashboard, you can use Tableau Reader, which is a free application. Download and install it from the Tableau website.
+If you want to create, edit, or publish dashboards, you'll need Tableau Desktop. You'll need a Tableau Desktop license for this.
+Obtain the Tableau Workbook (.twbx file):
+
+The dashboard creator should share the Tableau workbook with you. This file should have a ".twbx" extension.
+Open the Tableau Workbook:
+
+Double-click on the ".twbx" file to open it with Tableau Reader or Tableau Desktop.
+View the Dashboard:
+
+Once the workbook is open, you should be able to see and interact with the dashboard within the Tableau application. You can click on various elements, filters, and sheets to explore the data and visualizations.
+Interact with the Dashboard:
+
+Depending on the permissions set by the dashboard creator, you can filter, sort, and explore the data in the dashboard. You can also view tooltips, access dashboards within dashboards, and perform various interactions designed by the creator.
+Save a Local Copy (Optional):
+
+You may want to save a local copy of the dashboard for offline access or archival purposes. You can do this through the "File" menu in Tableau Reader or Tableau Desktop.
+That's it! You've successfully installed and viewed a Tableau dashboard. If you have Tableau Desktop and want to make changes or publish the dashboard, you can do so through the application's authoring features and then save and publish the updated workbook to Tableau Server or Tableau Online for wider distribution.
+
+Remember that the specific steps and options may vary depending on the version of Tableau you are using and your organization's setup. Be sure to consult Tableau's documentation or your organization's Tableau administrators for more detailed instructions or assistance.
+
+filename: D210-charts-dashboard.twb
