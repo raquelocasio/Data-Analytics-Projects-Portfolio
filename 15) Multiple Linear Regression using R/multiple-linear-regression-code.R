@@ -1,0 +1,130 @@
+library(ggplot2)
+
+# Read data from CSV file into a dataframe
+fundsdata <- read.csv("MutualFunds.csv")
+#typeof(fundsdata$year_to_date_return)
+
+# copy columns for study into new dataframe
+fundsdata_study <- fundsdata[ , c("total_net_assets", "annual_holdings_turnover", "fund_annual_report_net_expense_ratio", "fund_prospectus_net_expense_ratio", "fund_prospectus_gross_expense_ratio", "fund_max_12b1_fee", "fund_max_front_end_sales_load", "year_to_date_return")]
+
+# view structure of dataframe
+str(fundsdata_study)
+
+# summary statistics
+summary(fundsdata_study)
+
+# check for duplicate values
+sum(duplicated(fundsdata_study))
+# remove duplicates
+fundsdata_study <- fundsdata_study[!duplicated(fundsdata_study), ]
+# confirm duplicates are removed
+sum(duplicated(fundsdata_study))
+
+# check for outlier values
+# Function to calculate z-scores and display results for specified columns
+calculate_z_scores <- function(data, columns, threshold = 3) {
+  for (column in columns) {
+    if (column %in% names(data)) {
+      # Calculate z-scores using scale()
+      z_scores <- scale(data[[column]])
+      
+      # Find the count of outliers
+      outliers_count <- sum(abs(z_scores) > threshold)
+      
+      # Print results
+      cat("Column:", column, "\n")
+      cat("Count of Outliers:", outliers_count, "\n\n")
+    } else {
+      cat("Column", column, "not found in the data frame.\n\n")
+    }
+  }
+}
+
+# List of columns to check
+columns <- c("total_net_assets", "annual_holdings_turnover", "fund_annual_report_net_expense_ratio", "fund_prospectus_net_expense_ratio", "fund_prospectus_gross_expense_ratio", "fund_max_12b1_fee", "fund_max_front_end_sales_load", "year_to_date_return")
+
+# Call the function
+calculate_z_scores(fundsdata_study, columns)
+
+# check for missing values
+colSums(is.na(fundsdata_study))
+
+# histograms to inspect distribution of the variables
+par(mar = c(5, 4, 2, 2))
+hist(fundsdata_study$total_net_assets)
+hist(fundsdata_study$annual_holdings_turnover)
+hist(fundsdata_study$fund_annual_report_net_expense_ratio)
+hist(fundsdata_study$fund_prospectus_net_expense_ratio)
+hist(fundsdata_study$fund_prospectus_gross_expense_ratio)
+hist(fundsdata_study$fund_max_12b1_fee)
+hist(fundsdata_study$fund_max_front_end_sales_load)
+hist(fundsdata_study$year_to_date_return)
+
+# impute missing values
+fundsdata_study$total_net_assets[is.na(fundsdata_study$total_net_assets)] <- median(fundsdata_study$total_net_assets, na.rm=TRUE)
+
+fundsdata_study$annual_holdings_turnover[is.na(fundsdata_study$annual_holdings_turnover)] <- median(fundsdata_study$annual_holdings_turnover, na.rm=TRUE)
+
+fundsdata_study$fund_annual_report_net_expense_ratio[is.na(fundsdata_study$fund_annual_report_net_expense_ratio)] <- median(fundsdata_study$fund_annual_report_net_expense_ratio, na.rm=TRUE)
+
+fundsdata_study$fund_prospectus_net_expense_ratio[is.na(fundsdata_study$fund_prospectus_net_expense_ratio)] <- median(fundsdata_study$fund_prospectus_net_expense_ratio, na.rm=TRUE)
+
+fundsdata_study$fund_prospectus_gross_expense_ratio[is.na(fundsdata_study$fund_prospectus_gross_expense_ratio)] <- median(fundsdata_study$fund_prospectus_gross_expense_ratio, na.rm=TRUE)
+
+fundsdata_study$fund_max_12b1_fee[is.na(fundsdata_study$fund_max_12b1_fee)] <- median(fundsdata_study$fund_max_12b1_fee, na.rm=TRUE)
+
+fundsdata_study$fund_max_front_end_sales_load[is.na(fundsdata_study$fund_max_front_end_sales_load)] <- median(fundsdata_study$fund_max_front_end_sales_load, na.rm=TRUE)
+
+fundsdata_study$year_to_date_return[is.na(fundsdata_study$year_to_date_return)] <- mean(fundsdata_study$year_to_date_return, na.rm=TRUE)
+
+# verify missing values were imputed
+colSums(is.na(fundsdata_study))
+
+# verify distribution of data after imputation with new histograms
+par(mar = c(5, 4, 2, 2))
+hist(fundsdata_study$total_net_assets, main='total_net_assets imputed')
+hist(fundsdata_study$annual_holdings_turnover, main='annual_holdings_turnover imputed')
+hist(fundsdata_study$fund_annual_report_net_expense_ratio, main='fund_annual_report_net_expense_ratio imputed')
+hist(fundsdata_study$fund_prospectus_net_expense_ratio, main='fund_prospectus_net_expense_ratio imputed')
+hist(fundsdata_study$fund_prospectus_gross_expense_ratio, main='fund_prospectus_gross_expense_ratio imputed')
+hist(fundsdata_study$fund_max_12b1_fee, main='fund_max_12b1_fee imputed')
+hist(fundsdata_study$fund_max_front_end_sales_load, main='fund_max_front_end_sales_load imputed')
+hist(fundsdata_study$year_to_date_return, main='year_to_date_return imputed')
+
+# scatterplots to inspect linearity
+attach(fundsdata_study)
+plot(year_to_date_return, total_net_assets, main="year_to_date_return vs total_net_assets",
+     xlab="year_to_date_return", ylab="total_net_assets", pch=19)
+
+plot(year_to_date_return, annual_holdings_turnover, main="year_to_date_return vs annual_holdings_turnover",
+     xlab="year_to_date_return", ylab="annual_holdings_turnover", pch=19)
+
+plot(year_to_date_return, fund_annual_report_net_expense_ratio, main="year_to_date_return vs fund_annual_report_net_expense_ratio",
+     xlab="year_to_date_return", ylab="fund_annual_report_net_expense_ratio", pch=19)
+
+plot(year_to_date_return, fund_prospectus_net_expense_ratio, main="year_to_date_return vs fund_prospectus_net_expense_ratio",
+     xlab="year_to_date_return", ylab="fund_prospectus_net_expense_ratio", pch=19)
+
+plot(year_to_date_return, fund_prospectus_gross_expense_ratio, main="year_to_date_return vs fund_prospectus_gross_expense_ratio",
+     xlab="year_to_date_return", ylab="fund_prospectus_gross_expense_ratio", pch=19)
+
+plot(year_to_date_return, fund_max_12b1_fee, main="year_to_date_return vs fund_max_12b1_fee",
+     xlab="year_to_date_return", ylab="fund_max_12b1_fee", pch=19)
+
+# initial model
+model_initial <- lm(year_to_date_return ~ total_net_assets + annual_holdings_turnover + fund_annual_report_net_expense_ratio + fund_prospectus_net_expense_ratio + fund_prospectus_gross_expense_ratio + fund_max_12b1_fee + fund_max_front_end_sales_load, data = fundsdata_study)
+
+# initial model stats output
+summary(model_initial)
+
+# calculate initial model error rate
+sigma(model_initial)/mean(fundsdata_study$year_to_date_return)
+
+# remove insignificant variables to generate final model
+model_final <- lm(year_to_date_return ~ total_net_assets + fund_prospectus_net_expense_ratio + fund_prospectus_gross_expense_ratio + fund_max_front_end_sales_load, data = fundsdata_study)
+
+# final model stats output
+summary(model_final)
+
+# calculate final model error rate
+sigma(model_final)/mean(fundsdata_study$year_to_date_return)
